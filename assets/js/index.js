@@ -1,5 +1,19 @@
 $(function () {
     let layer = layui.layer;
+
+    getAvatarAndName();
+   
+    $("#logout").click(function () {
+        layer.confirm('确认退出登录?', { icon: 3, title: '提示' }, function (index) {
+            // 点击确认执行的函数
+            localStorage.removeItem("token");
+            location.href = "login.html";
+            layer.close(index);
+        });
+    })
+})
+ 
+function getAvatarAndName() {
     $.ajax({
         url: "/my/userinfo",
         success: function (res) {
@@ -18,7 +32,7 @@ $(function () {
             // 处理头像
             if (res.data.user_pic) {
                 // 如果有用户头像，展示用户头像，隐藏文字头像=没有就反之
-                $(".layui-nav-img").show().attr("src".res.data.user_pic);
+                $(".layui-nav-img").show().attr("src",res.data.user_pic);
                 $(".text-avatar").hide()
             } else {
                 $(".layui-nav-img").hide();
@@ -40,12 +54,4 @@ $(function () {
         //     }
         //   }, 
         });      
-    $("#logout").click(function () {
-        layer.confirm('确认退出登录?', { icon: 3, title: '提示' }, function (index) {
-            // 点击确认执行的函数
-            localStorage.removeItem("token");
-            location.href = "login.html";
-            layer.close(index);
-        });
-    })
-})
+}
